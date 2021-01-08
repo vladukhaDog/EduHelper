@@ -103,23 +103,40 @@ struct GroupView: View {
 }
 
 struct bells: View {
+	@State var SubOrPT = true // отобрать субботу или пятницу(true)
 	@Binding var update: Bool
 	var body: some View {
 		VStack
 		{
-			Text("ПН-ПТ")
-				.fontWeight(.heavy)
+			HStack{
+				Text(SubOrPT ? "ПН-ПТ" : "СБ")
+				Toggle(isOn: $SubOrPT) {}
+					.toggleStyle(CheckboxStyle())
+					.labelsHidden() // Hides the label/title
+			}
 			if (update) {
 				let rings = Storage.retrieve("Rings.json", from: .caches, as: RingTimes.self)
 				ForEach(rings.ring!, id: \.self) { ring in
 					HStack
 					{
-					Text(String(ring.id ?? 1))
-						.fontWeight(.heavy)
-						Divider()
-					Text(ring.StartTime ?? "")
-						Text(" -- ")
-					Text(ring.EndTime ?? "")
+						if (SubOrPT)
+						{
+							Text(String(ring.id ?? 1))
+								.fontWeight(.heavy)
+								Divider()
+							Text(ring.StartTime ?? "")
+								Text(" -- ")
+							Text(ring.EndTime ?? "")
+						}else
+						{
+							Text(String(ring.id ?? 1))
+								.fontWeight(.heavy)
+								Divider()
+							Text(ring.WEStartTime ?? "")
+								Text(" -- ")
+							Text(ring.WEEndTime ?? "")
+						}
+					
 					}
 					
 				}
@@ -133,5 +150,24 @@ struct bells: View {
 				RoundedRectangle(cornerRadius: 17)
 					.stroke(Color.blue, lineWidth: 1)
 			)
+	}
+}
+
+
+struct CheckboxStyle: ToggleStyle {
+ 
+	func makeBody(configuration: Self.Configuration) -> some View {
+ 
+		return HStack {
+			Image(systemName: configuration.isOn ? "eye" : "eye.slash")
+				.resizable()
+				.frame(width: 35, height: 24)
+				.foregroundColor(configuration.isOn ? .purple : .gray)
+				.font(.system(size: 20, weight: .bold, design: .default))
+				.onTapGesture {
+					configuration.isOn.toggle()
+				}
+		}
+ 
 	}
 }
