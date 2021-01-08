@@ -101,19 +101,11 @@ struct Pairs: View
 			if (Storage.fileExists("Schedule.json", in: .caches)) {
 				let schedules = Storage.retrieve("Schedule.json", from: .caches, as: Schedules.self)
 				let gay = schedules.schedule?.firstIndex(where: {$0.Group == UserDefaults.standard.string(forKey:"SelectedGroup") ?? "No Group Selected" } )
-				let schedulele = schedules.schedule?[gay ?? 0].Group
-				ForEach(schedules.schedule!, id: \.self) { schedule in
-					if (schedule.Group == UserDefaults.standard.string(forKey:"SelectedGroup") ?? "No Group Selected")
-					{
-						
-						let temp = schedule.day?[selectedDay].pair
-						ForEach(temp!, id: \.self) { pair in
-							PairSingle(pair: pair)
-							
-							}
+				let schedule = schedules.schedule?[gay ?? 0]
+				let temp = schedule?.day?[selectedDay].pair
+				ForEach(temp!, id: \.self) { pair in
+					PairSingle(pair: pair)
 					}
-					
-				}
 			}
 		}
 		.padding()
