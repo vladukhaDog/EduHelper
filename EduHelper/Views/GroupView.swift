@@ -161,7 +161,7 @@ struct CheckboxStyle: ToggleStyle {
 		return HStack {
 			Image(systemName: configuration.isOn ? "eye" : "eye.slash")
 				.resizable()
-				.frame(width: 35, height: 24)
+				.frame(width: 38, height: 24)
 				.foregroundColor(configuration.isOn ? .purple : .gray)
 				.font(.system(size: 20, weight: .bold, design: .default))
 				.onTapGesture {
