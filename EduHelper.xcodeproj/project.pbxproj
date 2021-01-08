@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -22,6 +22,7 @@
 		61E7CCA825A8BFEC0014CDDA /* ScheduleStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E7CCA725A8BFEC0014CDDA /* ScheduleStruct.swift */; };
 		61E7CCAB25A8BFFE0014CDDA /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E7CCAA25A8BFFE0014CDDA /* Parser.swift */; };
 		61E7CCAE25A8C0150014CDDA /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E7CCAD25A8C0150014CDDA /* Storage.swift */; };
+		61E7CCB425A8C1270014CDDA /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 61E7CCB325A8C1270014CDDA /* SwiftSoup */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61E7CCB425A8C1270014CDDA /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,6 +144,9 @@
 			dependencies = (
 			);
 			name = EduHelper;
+			packageProductDependencies = (
+				61E7CCB325A8C1270014CDDA /* SwiftSoup */,
+			);
 			productName = EduHelper;
 			productReference = 61E7CC7825A8BDC40014CDDA /* EduHelper.app */;
 			productType = "com.apple.product-type.application";
@@ -169,6 +174,9 @@
 				Base,
 			);
 			mainGroup = 61E7CC6F25A8BDC40014CDDA;
+			packageReferences = (
+				61E7CCB225A8C1270014CDDA /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+			);
 			productRefGroup = 61E7CC7925A8BDC40014CDDA /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -407,6 +415,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		61E7CCB225A8C1270014CDDA /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		61E7CCB325A8C1270014CDDA /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 61E7CCB225A8C1270014CDDA /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 61E7CC7025A8BDC40014CDDA /* Project object */;
 }
