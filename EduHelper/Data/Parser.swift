@@ -195,10 +195,10 @@ class parser
 				str.insert(":", at: str.index(str.startIndex, offsetBy: 2))
 				ring.EndTime = str
 				str = arrayEnd[0]
-				str.insert(":", at: str.index(str.startIndex, offsetBy: 2))
+				str.insert(":", at: str.index(str.endIndex, offsetBy: -2))
 				ring.WEStartTime = str
 				str = arrayEnd[1]
-				str.insert(":", at: str.index(str.startIndex, offsetBy: 2))
+				str.insert(":", at: str.index(str.endIndex, offsetBy: -2))
 				ring.WEEndTime = str
 				RingArray.append(ring)
 			}
