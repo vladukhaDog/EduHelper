@@ -18,7 +18,6 @@ func ifTherePairs(selectedDay: Int) -> Bool
 				{
 					return true
 				}
-				//schedule.day?[selectedDay].pair.c
 			}
 		}
 		}
@@ -66,47 +65,7 @@ struct ScheduleView: View {
 				}}
 				
 			ScrollView(.vertical, showsIndicators: true) {
-				VStack(spacing: 20) {
-					if (Storage.fileExists("Schedule.json", in: .caches)) {
-						let schedules = Storage.retrieve("Schedule.json", from: .caches, as: Schedules.self)
-						
-						ForEach(schedules.schedule!, id: \.self) { schedule in
-							if (schedule.Group == UserDefaults.standard.string(forKey:"SelectedGroup") ?? "No Group Selected")
-							{
-								let temp = schedule.day?[selectedDay].pair
-								ForEach(temp!, id: \.self) { pair in
-									
-									VStack()
-									{
-										HStack
-										{
-										//Text("№")
-										//	.fontWeight(.heavy)
-										Text(pair.Name ?? "--------------")
-											.fontWeight(.heavy)
-										}
-										Divider()
-										Text(pair.Teacher ?? "")
-											.fontWeight(.light)
-										
-									}
-									.frame(minWidth: 0,
-												maxWidth: .infinity,
-												minHeight: 0,
-												alignment: .topLeading
-											)
-									.padding()
-									.overlay(
-											RoundedRectangle(cornerRadius: 14)
-												.stroke(Color.gray, lineWidth: 4)
-										)
-									}
-							}
-							
-						}
-					}
-				}
-				.padding()
+				Pairs(selectedDay: $selectedDay)
 			}
 			}
 
@@ -130,5 +89,60 @@ struct ScheduleView: View {
 						}
 					})
 	}
+	}
+}
+
+struct Pairs: View
+{
+	@Binding var selectedDay: Int
+	var body: some View
+	{
+		VStack(spacing: 20) {
+			if (Storage.fileExists("Schedule.json", in: .caches)) {
+				let schedules = Storage.retrieve("Schedule.json", from: .caches, as: Schedules.self)
+				let gay = schedules.schedule?.firstIndex(where: {$0.Group == UserDefaults.standard.string(forKey:"SelectedGroup") ?? "No Group Selected" } )
+				let schedulele = schedules.schedule?[gay ?? 0].Group
+				ForEach(schedules.schedule!, id: \.self) { schedule in
+					if (schedule.Group == UserDefaults.standard.string(forKey:"SelectedGroup") ?? "No Group Selected")
+					{
+						
+						let temp = schedule.day?[selectedDay].pair
+						ForEach(temp!, id: \.self) { pair in
+							PairSingle(pair: pair)
+							
+							}
+					}
+					
+				}
+			}
+		}
+		.padding()
+	}
+}
+
+
+struct PairSingle: View
+{
+	@State var pair: Pair
+	var body: some View
+	{
+		VStack()
+		{
+			Text(pair.Name ?? "--------------")
+				.fontWeight(.heavy)
+			Divider()
+			Text(pair.Teacher ?? "")
+				.fontWeight(.light)
+		}
+		.frame(minWidth: 0,
+					maxWidth: .infinity,
+					minHeight: 0,
+					alignment: .topLeading
+				)
+		.padding()
+		.overlay(
+				RoundedRectangle(cornerRadius: 14)
+					.stroke(Color.gray, lineWidth: 4)
+			)
 	}
 }
