@@ -100,8 +100,8 @@ struct Pairs: View
 		VStack(spacing: 20) {
 			if (Storage.fileExists("Schedule.json", in: .caches)) {
 				let schedules = Storage.retrieve("Schedule.json", from: .caches, as: Schedules.self)
-				let gay = schedules.schedule?.firstIndex(where: {$0.Group == UserDefaults.standard.string(forKey:"SelectedGroup") ?? "No Group Selected" } )
-				let schedule = schedules.schedule?[gay ?? 0]
+				let GroupIndex = schedules.schedule?.firstIndex(where: {$0.Group == UserDefaults.standard.string(forKey:"SelectedGroup") ?? "No Group Selected" } )
+				let schedule = schedules.schedule?[GroupIndex ?? 0]
 				let temp = schedule?.day?[selectedDay].pair
 				ForEach(temp!, id: \.self) { pair in
 					PairSingle(pair: pair)
