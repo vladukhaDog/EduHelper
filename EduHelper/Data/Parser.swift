@@ -12,23 +12,32 @@ import UIKit
 class parser
 {
 	func getDay() -> Int{
-		let date = Calendar.current.component(.weekday, from: Date() - 1) // пятница - 6, воскресенье - 1
-		var shag = 0//date == 1 ? 1 : 2 //если сегодня восркесенье(1), то нужно вернуть 1-1 = 0, иначе минусуем 2, потому что в массиве дни с нуля начинаются
-		if (date == 1)
-		{
-			return 0 // если воскресенье, то возвращаем понедельник(0)
-		}else
-		{
-			let hour = Calendar.current.component(.hour, from: Date())
-			if (hour >= 18 && hour < 23) //заходишь вечером - смотришь след день сразу
-			{
-				shag = 1
-			}else
-			{
-				shag = 2
-			}
+		var date = Calendar.current.component(.weekday, from: Date() - 1) // пятница - 6, воскресенье - 1
+		switch date {
+		case 1: // воскресенье
+			date = 5
+		case 2: //понедельник
+			date = 0
+		case 3:
+			date = 1
+		case 4:
+			date = 2
+		case 5:
+			date = 3
+		case 6:
+			date = 4
+		case 7: //суббота
+			date = 5
+		default:
+			date = 0
 		}
-		return date-shag
+		let hour = Calendar.current.component(.hour, from: Date())
+		if (hour >= 18 && hour < 23) //заходишь вечером - смотришь след день сразу
+		{
+			date = date == 5 ? 0 : (date + 1)
+ 		}
+		
+		return date
 	}
 	func CheckConnection() -> Bool
 	{
