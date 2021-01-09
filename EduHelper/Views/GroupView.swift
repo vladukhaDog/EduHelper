@@ -16,10 +16,30 @@ struct GroupView: View {
 		let dispatchQueue = DispatchQueue(label: "QueueIdentification", qos: .background)
 		dispatchQueue.async{
 			let Parser = parser()
-			Parser.parse()
+			UpdateOnlineStatus()
+			if (Parser.CheckConnection())
+			{
+				Parser.parse()
+				self.groups = Storage.retrieve("Groups.json", from: .caches, as: Groups.self)
+				self.ShouldUpdateBell = true
+			}
 			self.isLoading = false
-			self.groups = Storage.retrieve("Groups.json", from: .caches, as: Groups.self)
-			self.ShouldUpdateBell = true
+		}
+	}
+	
+	func UpdateOnlineStatus()
+	{
+		let Parser = parser()
+		if (Parser.CheckConnection())
+		{
+			withAnimation {
+				self.online = true
+			}
+		}else
+		{
+			withAnimation {
+				self.online = false
+			}
 		}
 	}
 	
@@ -33,11 +53,14 @@ struct GroupView: View {
 	}
 	
 	@State private var groups = (Storage.fileExists("Groups.json", in: .caches)) ? Storage.retrieve("Groups.json", from: .caches, as: Groups.self) : nil
-	
+	@State private var online = true
 	@State private var selectedGroup = 0
 	@State private var isLoading = false
 	@State var ShouldUpdateBell = Storage.fileExists("Rings.json", in: .caches)
 	@Environment(\.colorScheme) var colorScheme
+	init() {
+		UpdateOnlineStatus()
+	}
 	var body: some View {
 		ZStack
 		{
@@ -46,14 +69,12 @@ struct GroupView: View {
 			else
 			{BackgroundView(Schemes: .light)}
 			
-		VStack {
-			Text("Выберите группу")
-				.font(.system(size: 30, weight: .medium, design: .default))
-				.padding(.top)
-				.onAppear {
-			
-				}
-			
+			VStack {
+				Text("Выберите группу")
+					.font(.system(size: 30, weight: .medium, design: .default))
+					.padding(.top)
+					.onAppear {
+					}
 				 Picker(selection: $selectedGroup, label: Text("Choose your Group")) {
 					let groupCount = groups?.name!.count ?? 0
 					if (groupCount > 0)
@@ -72,33 +93,54 @@ struct GroupView: View {
 						selectedGroup = groups?.name?.firstIndex(of: x as! String) ?? 0
 					}
 					PickerChanged()
+					UpdateOnlineStatus()
 				})
 				.onChange(of: selectedGroup, perform: { value in
 					PickerChanged()
 				})
 				.padding(-25)
-			ZStack
-			{
-				if (isLoading)
+				ZStack
 				{
-					ProgressView()
-						.progressViewStyle(CircularProgressViewStyle())
+					if (isLoading)
+					{
+						ProgressView()
+							.progressViewStyle(CircularProgressViewStyle())
+					}
+					Button(action: {
+						GettingSchedule()
+					}) {
+						Text("Обновить расписание")
+					} .disabled(isLoading)
 				}
-				Button(action: {
-					GettingSchedule()
-				}) {
-					Text("Обновить расписание")
-				} .disabled(isLoading)
-				
+				HStack
+				{
+					bells(update: $ShouldUpdateBell)
+						.padding(4)
+				}
 			}
-			HStack
+			
+			VStack
 			{
-				bells(update: $ShouldUpdateBell)
-					.padding(4)
+				if !online
+				{
+					offlineMessage()
+					Spacer()
+				}
 			}
-			}
+		}
 	}
-		
+}
+
+struct offlineMessage: View {
+	var body: some View {
+		Text("Нет подключения к сайту расписания, проверьте подключение к интернету")
+			.padding(.top, 14)
+			.frame(maxWidth: .infinity)
+			.foregroundColor(.black)
+			.background(Color.orange)
+			.opacity(0.9)
+			.ignoresSafeArea()
+			.transition(.move(edge: .top))
 	}
 }
 

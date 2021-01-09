@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ContentView: View {
-	@State private var selectedDay = 0
 	var body: some View {
 		
 		TabView {
