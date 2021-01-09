@@ -29,16 +29,19 @@ struct GroupView: View {
 	
 	func UpdateOnlineStatus()
 	{
-		let Parser = parser()
-		if (Parser.CheckConnection())
-		{
-			withAnimation {
-				self.online = true
-			}
-		}else
-		{
-			withAnimation {
-				self.online = false
+		let dispatchQueue = DispatchQueue(label: "QueueIdentification", qos: .background)
+		dispatchQueue.async{
+			let Parser = parser()
+			if (Parser.CheckConnection())
+			{
+				withAnimation {
+					self.online = true
+				}
+			}else
+			{
+				withAnimation {
+					self.online = false
+				}
 			}
 		}
 	}
