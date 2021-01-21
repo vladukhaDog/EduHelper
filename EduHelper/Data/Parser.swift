@@ -91,6 +91,10 @@ class parser
 							pairInfo.Name = "Занятий по расписанию нет!"
 						}else{
 							pairInfo.Name = try pair.select("p.pname").text()
+							if (pairInfo.Name != "")
+							{
+								pairInfo.PairNumber = try pair.select("td.pnum").text()
+							}
 							pairInfo.Room = try pair.select("p.pcab").text()
 							pairInfo.Teacher = try pair.select("p.pteacher").text()
 						}

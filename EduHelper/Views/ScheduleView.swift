@@ -46,7 +46,8 @@ struct ScheduleView: View {
 			
 			Picker(selection: $selectedDay, label: Text("Day of the week")) {
 				ForEach(0..<days.count) { index in
-					Text(self.days[index]).tag(index)
+					Text(self.days[index]).fontWeight(.heavy).tag(index)
+						
 						}
 				}.pickerStyle(SegmentedPickerStyle())
 			ZStack
@@ -110,23 +111,30 @@ struct PairSingle: View
 	@State var pair: Pair
 	var body: some View
 	{
-		VStack()
-		{
-			Text(pair.Name ?? "--------------")
-				.fontWeight(.heavy)
-			Divider()
-			Text(pair.Teacher ?? "")
-				.fontWeight(.light)
-		}
-		.frame(minWidth: 0,
+			VStack()
+			{
+				HStack
+				{
+					Text(pair.PairNumber ?? "")
+						.fontWeight(.heavy)
+						.font(.title)
+					Spacer()
+					Text(pair.Name ?? "--------------")
+						.fontWeight(.heavy)
+				}
+				Divider()
+				Text(pair.Teacher ?? "")
+					.fontWeight(.light)
+			}
+			.frame(minWidth: 0,
 					maxWidth: .infinity,
 					minHeight: 0,
 					alignment: .topLeading
 				)
-		.padding()
-		.overlay(
+			.padding()
+			.overlay(
 				RoundedRectangle(cornerRadius: 14)
 					.stroke(Color.gray, lineWidth: 4)
 			)
-	}
+		}
 }

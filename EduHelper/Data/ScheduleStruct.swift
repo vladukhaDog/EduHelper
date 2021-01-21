@@ -52,6 +52,7 @@ extension Change {
 
 struct Pair: Codable, Hashable, Identifiable{
 	var id = UUID()
+	var PairNumber: String?
 	var Name: String?
 	var Teacher: String?
 	var Room: String?
