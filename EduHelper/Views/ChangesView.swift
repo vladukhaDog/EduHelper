@@ -9,27 +9,28 @@ import SwiftUI
 
 struct ChangesView: View {
 	
-	func updateView()
-	{
-		self.update = false
-		self.update = true
-	}
 	
 	func GettingSchedule()
 	{
 		let dispatchQueue = DispatchQueue(label: "QueueIdentification", qos: .background)
 		dispatchQueue.async{
 			let Parser = parser()
+			self.isLoading = true
 			if (Parser.CheckConnection())
 			{
-				Parser.changesFromScratch()
+				withAnimation {
+					self.group = "No Group Selected"
+					Parser.changesFromScratch()
+					self.group = UserDefaults.standard.string(forKey:"SelectedGroup") ?? "No Group Selected"
+				}
 			}
+			self.isLoading = false
 		}
 	}
 	
-	@State private var update = Storage.fileExists("Changes.json", in: .caches)
+	@State var isLoading = false
 	@Environment(\.colorScheme) var colorScheme
-	
+	@State var group = UserDefaults.standard.string(forKey:"SelectedGroup") ?? "No Group Selected"
 	var body: some View {
 		ZStack
 		{
@@ -58,62 +59,67 @@ struct ChangesView: View {
 					}
 				}
 				Spacer()
-				Button(action: {
-					update = false
-					GettingSchedule()
-					update = true
-				}) {
-					Image(systemName: "arrow.clockwise.circle")
-						.font(Font.system(.largeTitle))
-				}.onAppear{
-					updateView()
+				ZStack
+				{
+					if (isLoading)
+					{
+						ProgressView()
+							.progressViewStyle(CircularProgressViewStyle())
+					}
+					Button(action: {
+						GettingSchedule()
+					}) {
+						Image(systemName: "arrow.clockwise.circle")
+							.font(Font.system(.largeTitle))
+					} .disabled(isLoading)
 				}
 			}
-			
-			if (update)
-			{
-				ScrollView(.vertical) {
-					VStack(spacing: 20) {
-						Divider()
-						if (Storage.fileExists("Changes.json", in: .caches)) {
-							let changes = Storage.retrieve("Changes.json", from: .caches, as: Changes.self)
-							ForEach(changes.change!, id: \.self) { change in
-								if (change.Group == UserDefaults.standard.string(forKey:"SelectedGroup") ?? "No Group Selected")
+			ScrollView(.vertical) {
+				VStack(spacing: 20) {
+					Divider()
+					if (Storage.fileExists("Changes.json", in: .caches)) {
+						let changes = Storage.retrieve("Changes.json", from: .caches, as: Changes.self)
+						ForEach(changes.change!, id: \.self) { change in
+							if (change.Group == group)
+							{
+								VStack()
 								{
-									VStack()
+									HStack()
 									{
-										HStack()
-										{
-											Text(change.PairNumber ?? "")
-												.fontWeight(.heavy)
-												.font(.title)
-											Spacer()
-											Text(change.SchPair?.Name ?? "")
-												.fontWeight(.light)
-												.foregroundColor(.red)
-										}
-										Divider()
-										Text(change.ChPair?.Name ?? "")
+										Text(change.PairNumber ?? "")
 											.fontWeight(.heavy)
-										Text((change.ChPair?.Teacher ?? ""))
+											.font(.title)
+										Spacer()
+										Text(change.SchPair?.Name ?? "")
 											.fontWeight(.light)
-											.font(.subheadline)
+											.foregroundColor(.red)
 									}
-									.padding()
-									.overlay(
-											RoundedRectangle(cornerRadius: 14)
-												.stroke(Color.gray, lineWidth: 4)
-										)
+									Divider()
+									Text(change.ChPair?.Name ?? "")
+										.fontWeight(.heavy)
+									Text((change.ChPair?.Teacher ?? ""))
+										.fontWeight(.light)
+										.font(.subheadline)
 								}
-								
+								.padding()
+								.overlay(
+										RoundedRectangle(cornerRadius: 14)
+											.stroke(Color.gray, lineWidth: 4)
+									)
+								.transition(.move(edge: .top))
 							}
+							
 						}
 					}
 				}
 			}
 			
+			
 		}
 		.padding()
+		}
+		.onAppear{
+			group = UserDefaults.standard.string(forKey:"SelectedGroup") ?? "No Group Selected"
 		}
 	}
 }
