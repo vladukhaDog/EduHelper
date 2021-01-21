@@ -19,8 +19,11 @@ struct ChangesView: View {
 	{
 		let dispatchQueue = DispatchQueue(label: "QueueIdentification", qos: .background)
 		dispatchQueue.async{
-			let par = parser()
-			par.changesFromScratch()
+			let Parser = parser()
+			if (Parser.CheckConnection())
+			{
+				Parser.changesFromScratch()
+			}
 		}
 	}
 	
@@ -111,7 +114,6 @@ struct ChangesView: View {
 			
 		}
 		.padding()
-		//Text(changes.change?[2].Group ?? "")
 		}
 	}
 }
