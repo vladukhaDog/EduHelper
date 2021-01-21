@@ -65,7 +65,18 @@ struct ScheduleView: View {
 				}}
 				
 			ScrollView(.vertical, showsIndicators: true) {
-				Pairs(selectedDay: $selectedDay)
+				VStack(spacing: 20) {
+					if (Storage.fileExists("Schedule.json", in: .caches)) {
+						let schedules = Storage.retrieve("Schedule.json", from: .caches, as: Schedules.self)
+						let GroupIndex = schedules.schedule?.firstIndex(where: {$0.Group == UserDefaults.standard.string(forKey:"SelectedGroup") ?? "No Group Selected" } )
+						let schedule = schedules.schedule?[GroupIndex ?? 0]
+						let temp = schedule?.day?[selectedDay].pair
+						ForEach(temp!, id: \.self) { pair in
+							PairSingle(pair: pair)
+							}
+					}
+				}
+				.padding()
 			}
 			}
 
@@ -92,25 +103,6 @@ struct ScheduleView: View {
 	}
 }
 
-struct Pairs: View
-{
-	@Binding var selectedDay: Int
-	var body: some View
-	{
-		VStack(spacing: 20) {
-			if (Storage.fileExists("Schedule.json", in: .caches)) {
-				let schedules = Storage.retrieve("Schedule.json", from: .caches, as: Schedules.self)
-				let GroupIndex = schedules.schedule?.firstIndex(where: {$0.Group == UserDefaults.standard.string(forKey:"SelectedGroup") ?? "No Group Selected" } )
-				let schedule = schedules.schedule?[GroupIndex ?? 0]
-				let temp = schedule?.day?[selectedDay].pair
-				ForEach(temp!, id: \.self) { pair in
-					PairSingle(pair: pair)
-					}
-			}
-		}
-		.padding()
-	}
-}
 
 
 struct PairSingle: View
