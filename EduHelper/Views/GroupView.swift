@@ -167,10 +167,51 @@ struct bells: View {
 		VStack
 		{
 			HStack{
-				Text(SubOrPT ? "ПН-ПТ" : "СБ")
-				Toggle(isOn: $SubOrPT) {}
-					.toggleStyle(CheckboxStyle())
-					.labelsHidden() // Hides the label/title
+				Button(action: {
+					withAnimation{
+					SubOrPT = true
+					}
+				}) {
+					if (SubOrPT)
+					{
+					Text("ПН-ПТ")
+						.padding()
+						.overlay(
+								RoundedRectangle(cornerRadius: 16)
+									.stroke(Color.pink, lineWidth: 1)
+							)
+						.transition(.opacity)
+					}
+					else
+					{
+						Text("ПН-ПТ")
+							.padding()
+					}
+				}
+				Button(action: {
+					withAnimation{
+					SubOrPT = false
+					}
+				}) {
+					if (!SubOrPT)
+					{
+					Text("СБ")
+						.padding()
+						.overlay(
+								RoundedRectangle(cornerRadius: 16)
+									.stroke(Color.pink, lineWidth: 1)
+							)
+						.transition(.opacity)
+					}
+					else
+					{
+						Text("СБ")
+							.padding()
+					}
+				}
+				//Toggle(isOn: $SubOrPT) {}
+				//	.toggleStyle(CheckboxStyle())
+				//	.labelsHidden() // Hides the label/title
 			}
 			if (update) {
 				let rings = Storage.retrieve("Rings.json", from: .caches, as: RingTimes.self)
@@ -183,16 +224,20 @@ struct bells: View {
 								.fontWeight(.heavy)
 								Divider()
 							Text(ring.StartTime ?? "")
-								Text(" -- ")
+								.transition(.opacity)
+							Text(" -- ")
 							Text(ring.EndTime ?? "")
+								.transition(.opacity)
 						}else
 						{
 							Text(String(ring.id ?? 1))
 								.fontWeight(.heavy)
 								Divider()
 							Text(ring.WEStartTime ?? "")
-								Text(" -- ")
+								.transition(.opacity)
+							Text(" -- ")
 							Text(ring.WEEndTime ?? "")
+								.transition(.opacity)
 						}
 					
 					}
