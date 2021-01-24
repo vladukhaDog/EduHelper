@@ -14,9 +14,11 @@ class parser
 	let myURLstring = "https://pkgh.edu.ru/obuchenie/shedule-of-classes.html"
 	func getDay() -> Int{
 		var date = Calendar.current.component(.weekday, from: Date() - 1) // пятница - 6, воскресенье - 1
+		var kostil = true
 		switch date {
 		case 1: // воскресенье
-			date = 5
+			date = 0
+			kostil = false
 		case 2: //понедельник
 			date = 0
 		case 3:
@@ -33,7 +35,7 @@ class parser
 			date = 0
 		}
 		let hour = Calendar.current.component(.hour, from: Date())
-		if (hour >= 18 && hour < 23) //заходишь вечером - смотришь след день сразу
+		if ((hour >= 18 && hour < 23) && kostil) //заходишь вечером - смотришь след день сразу
 		{
 			date = date == 5 ? 0 : (date + 1)
  		}
