@@ -45,7 +45,6 @@ class parser
 		guard let myURL = URL(string: myURLstring) else {return false}
 		do{
 			let myHTMLString = try String(contentsOf: myURL, encoding: .utf8)
-			let _ = try! SwiftSoup.parse(myHTMLString).select("div#main")
 			return true
 		} catch {
 			return false
