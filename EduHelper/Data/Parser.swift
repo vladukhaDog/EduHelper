@@ -16,7 +16,7 @@ class parser
 		var date = Calendar.current.component(.weekday, from: Date() - 1) // пятница - 6, воскресенье - 1
 		switch date {
 		case 1: // воскресенье
-			date = 5
+			date = 0
 		case 2: //понедельник
 			date = 0
 		case 3:
