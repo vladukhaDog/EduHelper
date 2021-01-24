@@ -132,12 +132,31 @@ struct PairSingle: View
 					Text(pair?.PairNumber ?? "")
 						.fontWeight(.heavy)
 						.font(.title)
-						.onAppear(perform: {
-							print(PairOrAlt)
-						})
 					Spacer()
-					Text(pair?.Name ?? "--------------")
-						.fontWeight(.heavy)
+					VStack
+					{
+						if (PairOrAlt.altPair?.Name != ""){
+							HStack{
+								Spacer()
+								if(isEvenWeek())
+								{
+									Text("Пара по числителю")
+										.font(.footnote)
+										.opacity(0.6)
+								}
+								else{
+									Text("Пара по знаменателю")
+										.font(.footnote)
+										.opacity(0.6)
+								}
+								
+							}
+						}
+						
+						Text(pair?.Name ?? "--------------")
+							.fontWeight(.heavy)
+					}
+					
 				}
 				Divider()
 				Text(pair?.Teacher ?? "--")
