@@ -31,6 +31,7 @@ struct GroupView: View {
 	{
 		let dispatchQueue = DispatchQueue(label: "QueueIdentification", qos: .background)
 		dispatchQueue.async{
+			self.checkUpdateLocked = true
 			let Parser = parser()
 			if (Parser.CheckConnection())
 			{
@@ -43,6 +44,7 @@ struct GroupView: View {
 					self.online = false
 				}
 			}
+			self.checkUpdateLocked = false
 		}
 	}
 	
@@ -61,9 +63,15 @@ struct GroupView: View {
 	@State private var isLoading = false
 	@State var ShouldUpdateBell = Storage.fileExists("Rings.json", in: .caches)
 	@Environment(\.colorScheme) var colorScheme
+	
+	let timer = Timer.publish(every: 2, on: .main, in: .common).autoconnect()
+	@State var checkUpdateLocked = false
+	
+	
 	init() {
-		UpdateOnlineStatus()
 	}
+	
+	
 	var body: some View {
 		ZStack
 		{
@@ -96,7 +104,6 @@ struct GroupView: View {
 						selectedGroup = groups?.name?.firstIndex(of: x as! String) ?? 0
 					}
 					PickerChanged()
-					UpdateOnlineStatus()
 				})
 				.onChange(of: selectedGroup, perform: { value in
 					PickerChanged()
@@ -131,6 +138,12 @@ struct GroupView: View {
 				}
 			}
 		}
+		.onReceive(timer) { time in
+			if (!checkUpdateLocked)
+			{
+			UpdateOnlineStatus()
+			}
+				}
 	}
 }
 
