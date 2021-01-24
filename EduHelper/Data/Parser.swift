@@ -83,25 +83,9 @@ class parser
 					var pairs : [PairOrAlt] = []
 					var dayInfo = Day()
 					let pairArray = try day.select("tr.pair").array()
-					for pair in pairArray
+					for pairTD in pairArray
 					{
-						
-						var pairInfo = Pair()
-						var altPairInfo = Pair()
-						if (try pair.select("b").text().contains("Занятий"))
-						{
-							pairInfo.Name = "Занятий по расписанию нет!"
-						}else{
-							pairInfo.Name = try pair.select("p.pname").text()
-							if (pairInfo.Name != "")
-							{
-								pairInfo.PairNumber = try pair.select("td.pnum").text()
-							}
-							pairInfo.Room = try pair.select("p.pcab").text()
-							pairInfo.Teacher = try pair.select("p.pteacher").text()
-						}
-						var WholePairInfo = PairOrAlt(Pair: pairInfo, altPair: altPairInfo)
-						WholePairInfo.Pair = pairInfo
+						let WholePairInfo = PairOrAlt(Pair: getPair(pair: pairTD, key: ""), altPair: getPair(pair: pairTD, key: "alt"))
 						pairs.append(WholePairInfo)
 					}
 					dayInfo.pair = pairs
@@ -119,6 +103,29 @@ class parser
 		} catch {
 			print("Was error getting changes")
 		}
+	}
+	
+	func getPair(pair: Element, key: String) -> Pair
+	{
+		var pairInfo = Pair()
+		do {
+			if (try pair.select("b").text().contains("Занятий"))
+			{
+				pairInfo.Name = "Занятий по расписанию нет!"
+			}else{
+				pairInfo.Name = try pair.select("p.p\(key)name").text()
+				if (pairInfo.Name != "")
+				{
+					pairInfo.PairNumber = try pair.select("td.pnum").text()
+				}
+				pairInfo.Room = try pair.select("p.pcab").text()
+				pairInfo.Teacher = try pair.select("p.p\(key)teacher").text()
+			}
+			return pairInfo
+		} catch  {
+			print("Error getting pair in getPairWithAlt")
+		}
+		return pairInfo
 	}
 	
 	func changesFromScratch()
