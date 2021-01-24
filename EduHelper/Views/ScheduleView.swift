@@ -24,6 +24,18 @@ func ifTherePairs(selectedDay: Int) -> Bool
 		return false
 }
 
+func isEvenWeek() -> Bool
+{
+	//проверяем знаменатель недели четный или нет
+	let weekInt = NSCalendar.current.component(.weekOfYear, from: Date())
+	if (weekInt % 2 == 0) {
+		return true
+	}else
+	{
+	return false
+	}
+}
+
 struct ScheduleView: View {
 	let par = parser()
 	@State private var selectedDay = 0
@@ -73,7 +85,7 @@ struct ScheduleView: View {
 						let schedule = schedules.schedule?[GroupIndex ?? 0]
 						let temp = schedule?.day?[selectedDay].pair
 						ForEach(temp!, id: \.self) { pair in
-							PairSingle(pair: pair)
+							PairSingle(PairOrAlt: pair)
 							}
 					}
 				}
@@ -108,22 +120,46 @@ struct ScheduleView: View {
 
 struct PairSingle: View
 {
-	@State var pair: Pair
+	@State var PairOrAlt: PairOrAlt
 	var body: some View
 	{
+		
+		let pair = (!isEvenWeek() && (PairOrAlt.altPair?.Name != "")) ? PairOrAlt.altPair : PairOrAlt.Pair
 			VStack()
 			{
 				HStack
 				{
-					Text(pair.PairNumber ?? "")
+					Text(pair?.PairNumber ?? "")
 						.fontWeight(.heavy)
 						.font(.title)
 					Spacer()
-					Text(pair.Name ?? "--------------")
-						.fontWeight(.heavy)
+					VStack
+					{
+						if (PairOrAlt.altPair?.Name != ""){
+							HStack{
+								Spacer()
+								if(isEvenWeek())
+								{
+									Text("Пара по числителю")
+										.font(.footnote)
+										.opacity(0.6)
+								}
+								else{
+									Text("Пара по знаменателю")
+										.font(.footnote)
+										.opacity(0.6)
+								}
+								
+							}
+						}
+						
+						Text(pair?.Name ?? "--------------")
+							.fontWeight(.heavy)
+					}
+					
 				}
 				Divider()
-				Text(pair.Teacher ?? "")
+				Text(pair?.Teacher ?? "--")
 					.fontWeight(.light)
 			}
 			.frame(minWidth: 0,
