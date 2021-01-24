@@ -80,12 +80,14 @@ class parser
 				let dayArray = try group.select("table.shedule").array()
 				for day in dayArray
 				{
-					var pairs : [Pair] = []
+					var pairs : [PairOrAlt] = []
 					var dayInfo = Day()
 					let pairArray = try day.select("tr.pair").array()
 					for pair in pairArray
 					{
+						
 						var pairInfo = Pair()
+						var altPairInfo = Pair()
 						if (try pair.select("b").text().contains("Занятий"))
 						{
 							pairInfo.Name = "Занятий по расписанию нет!"
@@ -98,8 +100,9 @@ class parser
 							pairInfo.Room = try pair.select("p.pcab").text()
 							pairInfo.Teacher = try pair.select("p.pteacher").text()
 						}
-						
-						pairs.append(pairInfo)
+						var WholePairInfo = PairOrAlt(Pair: pairInfo, altPair: altPairInfo)
+						WholePairInfo.Pair = pairInfo
+						pairs.append(WholePairInfo)
 					}
 					dayInfo.pair = pairs
 					dayInfo.weekday = try day.select("p.groupname").text()

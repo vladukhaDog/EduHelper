@@ -108,22 +108,22 @@ struct ScheduleView: View {
 
 struct PairSingle: View
 {
-	@State var pair: Pair
+	@State var pair: PairOrAlt
 	var body: some View
 	{
 			VStack()
 			{
 				HStack
 				{
-					Text(pair.PairNumber ?? "")
+					Text(pair.Pair?.PairNumber ?? "")
 						.fontWeight(.heavy)
 						.font(.title)
 					Spacer()
-					Text(pair.Name ?? "--------------")
+					Text(pair.Pair?.Name ?? "--------------")
 						.fontWeight(.heavy)
 				}
 				Divider()
-				Text(pair.Teacher ?? "")
+				Text(pair.Pair?.Teacher ?? "")
 					.fontWeight(.light)
 			}
 			.frame(minWidth: 0,

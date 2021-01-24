@@ -66,11 +66,17 @@ extension Pair {
 	}
 }
 
+struct PairOrAlt: Codable, Hashable, Identifiable{
+	var id = UUID()
+	var Pair: Pair?
+	var altPair: Pair?
+}
+
 struct Day: Codable, Hashable {
 	
 	var id = UUID()
 	var weekday: String?
-	var pair: [Pair]?
+	var pair: [PairOrAlt]?
 	func hash(into hasher: inout Hasher) {
 		hasher.combine(id)
 	}
