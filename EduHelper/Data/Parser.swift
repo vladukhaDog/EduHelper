@@ -11,6 +11,7 @@ import UIKit
 
 class parser
 {
+	let myURLstring = "https://pkgh.edu.ru/obuchenie/shedule-of-classes.html"
 	func getDay() -> Int{
 		var date = Calendar.current.component(.weekday, from: Date() - 1) // пятница - 6, воскресенье - 1
 		switch date {
@@ -41,7 +42,6 @@ class parser
 	}
 	func CheckConnection() -> Bool
 	{
-		let myURLstring = "https://pkgh.edu.ru/obuchenie/shedule-of-classes.html"
 		guard let myURL = URL(string: myURLstring) else {return false}
 		do{
 			let myHTMLString = try String(contentsOf: myURL, encoding: .utf8)
@@ -54,7 +54,6 @@ class parser
 	
 	func parse()
 	{
-		let myURLstring = "https://pkgh.edu.ru/obuchenie/shedule-of-classes.html"
 		guard let myURL = URL(string: myURLstring) else {return}
 		do{
 			let myHTMLString = try String(contentsOf: myURL, encoding: .utf8)
@@ -120,7 +119,6 @@ class parser
 	
 	func changesFromScratch()
 	{
-		let myURLstring = "https://pkgh.edu.ru/obuchenie/shedule-of-classes.html"
 		guard let myURL = URL(string: myURLstring) else {return}
 		do{
 			let myHTMLString = try String(contentsOf: myURL, encoding: .utf8)
@@ -133,7 +131,6 @@ class parser
 	
 	func groupsFromScratch()
 	{
-		let myURLstring = "https://pkgh.edu.ru/obuchenie/shedule-of-classes.html"
 		guard let myURL = URL(string: myURLstring) else {return}
 		do{
 			let myHTMLString = try String(contentsOf: myURL, encoding: .utf8)
