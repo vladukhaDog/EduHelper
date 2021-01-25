@@ -85,8 +85,16 @@ struct ScheduleView: View {
 						let schedule = schedules.schedule?[GroupIndex ?? 0]
 						let temp = schedule?.day?[selectedDay].pair
 						ForEach(temp!, id: \.self) { pair in
-							PairSingle(PairOrAlt: pair)
+							if (pair.altPair?.Name != "")
+							{
+								buttonPair(PairOrAlt: pair)
 							}
+							else
+							{
+								PairSingle(PairOrAlt: pair, alt: false)
+							}
+							
+						}
 					}
 				}
 				.padding()
@@ -116,61 +124,40 @@ struct ScheduleView: View {
 	}
 }
 
-
-
-struct PairSingle: View
+struct buttonPair: View
 {
 	@State var PairOrAlt: PairOrAlt
+	@State var showAltPair = false
 	var body: some View
 	{
-		
-		let pair = (!isEvenWeek() && (PairOrAlt.altPair?.Name != "")) ? PairOrAlt.altPair : PairOrAlt.Pair
-			VStack()
+		ZStack{
+			
+			if (showAltPair)
 			{
-				HStack
-				{
-					Text(pair?.PairNumber ?? "")
-						.fontWeight(.heavy)
-						.font(.title)
-					Spacer()
-					VStack
-					{
-						if (PairOrAlt.altPair?.Name != ""){
-							HStack{
-								Spacer()
-								if(isEvenWeek())
-								{
-									Text("Пара по числителю")
-										.font(.footnote)
-										.opacity(0.6)
-								}
-								else{
-									Text("Пара по знаменателю")
-										.font(.footnote)
-										.opacity(0.6)
-								}
-								
-							}
-						}
-						
-						Text(pair?.Name ?? "--------------")
-							.fontWeight(.heavy)
+				Button(action: {
+					withAnimation{
+						showAltPair.toggle()
 					}
+				}){
+					PairSingle(PairOrAlt: PairOrAlt, alt: true)
+						
+				}
+				.transition(.scale)
+				.buttonStyle(PlainButtonStyle())
+			}else
+			{
+				Button(action: {
+					withAnimation{
+						showAltPair.toggle()
+					}
+				}){
+					PairSingle(PairOrAlt: PairOrAlt, alt: false)
 					
 				}
-				Divider()
-				Text(pair?.Teacher ?? "--")
-					.fontWeight(.light)
+				.transition(.move(edge: .leading))
+				.buttonStyle(PlainButtonStyle())
 			}
-			.frame(minWidth: 0,
-					maxWidth: .infinity,
-					minHeight: 0,
-					alignment: .topLeading
-				)
-			.padding()
-			.overlay(
-				RoundedRectangle(cornerRadius: 14)
-					.stroke(Color.gray, lineWidth: 4)
-			)
 		}
+	}
 }
+
