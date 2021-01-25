@@ -58,6 +58,8 @@ struct PairSingle: View
 					
 					Text(pair?.Name ?? "--------------")
 						.fontWeight(.heavy)
+						.fixedSize(horizontal: false, vertical: true)
+						//.fontWeight(.heavy)
 				}
 				
 			}

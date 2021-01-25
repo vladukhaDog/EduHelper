@@ -85,7 +85,7 @@ struct ScheduleView: View {
 						let schedule = schedules.schedule?[GroupIndex ?? 0]
 						let temp = schedule?.day?[selectedDay].pair
 						ForEach(temp!, id: \.self) { pair in
-							if (!isEvenWeek() && (pair.altPair?.Name != ""))
+							if (pair.altPair?.Name != "")
 							{
 								buttonPair(PairOrAlt: pair)
 							}
