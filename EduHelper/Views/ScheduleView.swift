@@ -131,15 +131,7 @@ struct buttonPair: View
 	var body: some View
 	{
 		ZStack{
-			Button(action: {
-				withAnimation{
-					showAltPair.toggle()
-				}
-			}){
-				PairSingle(PairOrAlt: PairOrAlt, alt: false)
-				
-			}
-			.buttonStyle(PlainButtonStyle())
+			
 			if (showAltPair)
 			{
 				Button(action: {
@@ -150,7 +142,19 @@ struct buttonPair: View
 					PairSingle(PairOrAlt: PairOrAlt, alt: true)
 						
 				}
-				.transition(.slide)
+				.transition(.scale)
+				.buttonStyle(PlainButtonStyle())
+			}else
+			{
+				Button(action: {
+					withAnimation{
+						showAltPair.toggle()
+					}
+				}){
+					PairSingle(PairOrAlt: PairOrAlt, alt: false)
+					
+				}
+				.transition(.move(edge: .leading))
 				.buttonStyle(PlainButtonStyle())
 			}
 		}
@@ -164,54 +168,54 @@ struct PairSingle: View
 	@State var alt: Bool
 	var body: some View
 	{
-			let pair = (!isEvenWeek() && (PairOrAlt.altPair?.Name != "")) ? PairOrAlt.altPair : PairOrAlt.Pair
-		
-			VStack()
+		let temp = (!isEvenWeek() && (PairOrAlt.altPair?.Name != ""))
+		let pair = alt ? (temp ? PairOrAlt.Pair : PairOrAlt.altPair) : (temp ? PairOrAlt.altPair : PairOrAlt.Pair)
+		VStack()
+		{
+			HStack
 			{
-				HStack
+				Text(pair?.PairNumber ?? "")
+					.fontWeight(.heavy)
+					.font(.title)
+				Spacer()
+				VStack
 				{
-					Text(pair?.PairNumber ?? "")
-						.fontWeight(.heavy)
-						.font(.title)
-					Spacer()
-					VStack
-					{
-						if (PairOrAlt.altPair?.Name != ""){
-							HStack{
-								Spacer()
-								if(isEvenWeek())
-								{
-									Text("Пара по числителю")
-										.font(.footnote)
-										.opacity(0.6)
-								}
-								else{
-									Text("Пара по знаменателю")
-										.font(.footnote)
-										.opacity(0.6)
-								}
-								
+					if (PairOrAlt.altPair?.Name != ""){
+						HStack{
+							Spacer()
+							if(isEvenWeek())
+							{
+								Text("Пара по числителю")
+									.font(.footnote)
+									.opacity(0.6)
 							}
+							else{
+								Text("Пара по знаменателю")
+									.font(.footnote)
+									.opacity(0.6)
+							}
+							
 						}
-						
-						Text(pair?.Name ?? "--------------")
-							.fontWeight(.heavy)
 					}
 					
+					Text(pair?.Name ?? "--------------")
+						.fontWeight(.heavy)
 				}
-				Divider()
-				Text(pair?.Teacher ?? "--")
-					.fontWeight(.light)
+				
 			}
-			.frame(minWidth: 0,
-					maxWidth: .infinity,
-					minHeight: 0,
-					alignment: .topLeading
-				)
-			.padding()
-			.overlay(
-				RoundedRectangle(cornerRadius: 14)
-					.stroke(Color.gray, lineWidth: 4)
-			)
+			Divider()
+			Text(pair?.Teacher ?? "--")
+				.fontWeight(.light)
 		}
+		.frame(minWidth: 0,
+				maxWidth: .infinity,
+				minHeight: 0,
+				alignment: .topLeading
+			)
+		.padding()
+		.overlay(
+			RoundedRectangle(cornerRadius: 14)
+				.stroke(Color.gray, lineWidth: 4)
+		)
+	}
 }
