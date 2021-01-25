@@ -188,6 +188,7 @@ struct bells: View {
 							.padding()
 					}
 				}
+				.buttonStyle(PlainButtonStyle())
 				Button(action: {
 					withAnimation{
 					SubOrPT = false
@@ -209,9 +210,7 @@ struct bells: View {
 							.padding()
 					}
 				}
-				//Toggle(isOn: $SubOrPT) {}
-				//	.toggleStyle(CheckboxStyle())
-				//	.labelsHidden() // Hides the label/title
+				.buttonStyle(PlainButtonStyle())
 			}
 			if (update) {
 				let rings = Storage.retrieve("Rings.json", from: .caches, as: RingTimes.self)
