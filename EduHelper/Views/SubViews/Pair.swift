@@ -30,16 +30,29 @@ struct PairSingle: View
 							Spacer()
 							if(isEvenWeek())
 							{
-								Text("Пара по числителю")
-									.font(.footnote)
-									.opacity(0.6)
+								if !alt {
+									Text("Пара по числителю")
+										.font(.footnote)
+										.opacity(0.6)
+								}else
+								{
+									Text("Пара по знаменателю")
+										.font(.footnote)
+										.opacity(0.6)
+								}
 							}
 							else{
-								Text("Пара по знаменателю")
-									.font(.footnote)
-									.opacity(0.6)
+								if !alt {
+									Text("Пара по знаменателю")
+										.font(.footnote)
+										.opacity(0.6)
+								}else
+								{
+									Text("Пара по числителю")
+										.font(.footnote)
+										.opacity(0.6)
+								}
 							}
-							
 						}
 					}
 					
