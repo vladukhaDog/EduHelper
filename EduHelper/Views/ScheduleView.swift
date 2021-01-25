@@ -142,7 +142,16 @@ struct buttonPair: View
 			.buttonStyle(PlainButtonStyle())
 			if (showAltPair)
 			{
-				PairSingle(PairOrAlt: PairOrAlt, alt: true)
+				Button(action: {
+					withAnimation{
+						showAltPair.toggle()
+					}
+				}){
+					PairSingle(PairOrAlt: PairOrAlt, alt: true)
+						
+				}
+				.transition(.slide)
+				.buttonStyle(PlainButtonStyle())
 			}
 		}
 	}
@@ -155,13 +164,8 @@ struct PairSingle: View
 	@State var alt: Bool
 	var body: some View
 	{
-		if(alt){
-			let pair = (!isEvenWeek() && (PairOrAlt.altPair?.Name != "")) ? PairOrAlt.Pair : PairOrAlt.altPair
-		}
-		else
-		{
 			let pair = (!isEvenWeek() && (PairOrAlt.altPair?.Name != "")) ? PairOrAlt.altPair : PairOrAlt.Pair
-		}
+		
 			VStack()
 			{
 				HStack
