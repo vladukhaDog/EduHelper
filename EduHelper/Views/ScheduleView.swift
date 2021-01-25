@@ -85,8 +85,16 @@ struct ScheduleView: View {
 						let schedule = schedules.schedule?[GroupIndex ?? 0]
 						let temp = schedule?.day?[selectedDay].pair
 						ForEach(temp!, id: \.self) { pair in
-							PairSingle(PairOrAlt: pair)
+							if (!isEvenWeek() && (pair.altPair?.Name != ""))
+							{
+								buttonPair(PairOrAlt: pair)
 							}
+							else
+							{
+								PairSingle(PairOrAlt: pair)
+							}
+							
+						}
 					}
 				}
 				.padding()
@@ -116,6 +124,20 @@ struct ScheduleView: View {
 	}
 }
 
+struct buttonPair: View
+{
+	@State var PairOrAlt: PairOrAlt
+	var body: some View
+	{
+		Button(action: {
+			print("gae")
+		}){
+			PairSingle(PairOrAlt: PairOrAlt)
+			
+		}
+		.buttonStyle(PlainButtonStyle())
+	}
+}
 
 
 struct PairSingle: View
