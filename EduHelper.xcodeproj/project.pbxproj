@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		614445EB25BE8C37008DC80B /* Pair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614445EA25BE8C37008DC80B /* Pair.swift */; };
 		61E7CC7C25A8BDC40014CDDA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E7CC7B25A8BDC40014CDDA /* AppDelegate.swift */; };
 		61E7CC7E25A8BDC40014CDDA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E7CC7D25A8BDC40014CDDA /* SceneDelegate.swift */; };
 		61E7CC8025A8BDC40014CDDA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E7CC7F25A8BDC40014CDDA /* ContentView.swift */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		614445EA25BE8C37008DC80B /* Pair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pair.swift; sourceTree = "<group>"; };
 		61E7CC7825A8BDC40014CDDA /* EduHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EduHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61E7CC7B25A8BDC40014CDDA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		61E7CC7D25A8BDC40014CDDA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 				61E7CC9E25A8BFA50014CDDA /* SubViews */,
 				61E7CC9125A8BF560014CDDA /* GroupView.swift */,
 				61E7CC9425A8BF690014CDDA /* ScheduleView.swift */,
+				614445EA25BE8C37008DC80B /* Pair.swift */,
 				61E7CC9725A8BF780014CDDA /* ChangesView.swift */,
 				61E7CC9A25A8BF8A0014CDDA /* Settings.swift */,
 			);
@@ -206,6 +209,7 @@
 				61E7CCA825A8BFEC0014CDDA /* ScheduleStruct.swift in Sources */,
 				61E7CC9525A8BF690014CDDA /* ScheduleView.swift in Sources */,
 				61E7CCA025A8BFB50014CDDA /* BackGroundView.swift in Sources */,
+				614445EB25BE8C37008DC80B /* Pair.swift in Sources */,
 				61E7CCAE25A8C0150014CDDA /* Storage.swift in Sources */,
 				61E7CC7C25A8BDC40014CDDA /* AppDelegate.swift in Sources */,
 				61E7CC7E25A8BDC40014CDDA /* SceneDelegate.swift in Sources */,
