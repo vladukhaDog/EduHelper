@@ -91,7 +91,7 @@ struct ScheduleView: View {
 							}
 							else
 							{
-								PairSingle(PairOrAlt: pair)
+								PairSingle(PairOrAlt: pair, alt: false)
 							}
 							
 						}
@@ -127,15 +127,24 @@ struct ScheduleView: View {
 struct buttonPair: View
 {
 	@State var PairOrAlt: PairOrAlt
+	@State var showAltPair = false
 	var body: some View
 	{
-		Button(action: {
-			print("gae")
-		}){
-			PairSingle(PairOrAlt: PairOrAlt)
-			
+		ZStack{
+			Button(action: {
+				withAnimation{
+					showAltPair.toggle()
+				}
+			}){
+				PairSingle(PairOrAlt: PairOrAlt, alt: false)
+				
+			}
+			.buttonStyle(PlainButtonStyle())
+			if (showAltPair)
+			{
+				PairSingle(PairOrAlt: PairOrAlt, alt: true)
+			}
 		}
-		.buttonStyle(PlainButtonStyle())
 	}
 }
 
@@ -143,10 +152,16 @@ struct buttonPair: View
 struct PairSingle: View
 {
 	@State var PairOrAlt: PairOrAlt
+	@State var alt: Bool
 	var body: some View
 	{
-		
-		let pair = (!isEvenWeek() && (PairOrAlt.altPair?.Name != "")) ? PairOrAlt.altPair : PairOrAlt.Pair
+		if(alt){
+			let pair = (!isEvenWeek() && (PairOrAlt.altPair?.Name != "")) ? PairOrAlt.Pair : PairOrAlt.altPair
+		}
+		else
+		{
+			let pair = (!isEvenWeek() && (PairOrAlt.altPair?.Name != "")) ? PairOrAlt.altPair : PairOrAlt.Pair
+		}
 			VStack()
 			{
 				HStack
