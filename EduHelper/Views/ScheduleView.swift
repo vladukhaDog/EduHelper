@@ -11,15 +11,13 @@ func ifTherePairs(selectedDay: Int) -> Bool
 {
 	if (Storage.fileExists("Schedule.json", in: .caches)) {
 		let schedules = Storage.retrieve("Schedule.json", from: .caches, as: Schedules.self)
-		for schedule in schedules.schedule! {
-			if (schedule.Group == UserDefaults.standard.string(forKey:"SelectedGroup") ?? "No Group Selected")
+		let GroupIndex = schedules.schedule?.firstIndex(where: {$0.Group == UserDefaults.standard.string(forKey:"SelectedGroup") ?? "No Group Selected" } )
+		let schedule = schedules.schedule?[GroupIndex ?? 0]
+		let pairs = schedule?.day?[selectedDay].pair
+			if (pairs?.count ?? 0 > 4)
 			{
-				if (schedule.day?[selectedDay].pair?.count ?? 0 > 4)
-				{
-					return true
-				}
+				return true
 			}
-		}
 		}
 		return false
 }
