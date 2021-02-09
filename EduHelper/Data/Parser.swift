@@ -83,10 +83,12 @@ class parser
 					var pairs : [PairOrAlt] = []
 					var dayInfo = Day()
 					let pairArray = try day.select("tr.pair").array()
+					if (pairArray.count != 1){
 					for pairTD in pairArray
 					{
 						let WholePairInfo = PairOrAlt(Pair: getPair(pair: pairTD, key: ""), altPair: getPair(pair: pairTD, key: "alt"))
 						pairs.append(WholePairInfo)
+					}
 					}
 					dayInfo.pair = pairs
 					dayInfo.weekday = try day.select("p.groupname").text()
