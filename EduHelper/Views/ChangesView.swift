@@ -30,8 +30,13 @@ struct ChangesView: View {
 	
 	@State var isLoading = false
 	@Environment(\.colorScheme) var colorScheme
-	@State var group = UserDefaults.standard.string(forKey:"SelectedGroup") ?? "No Group Selected"
+	@State var group = "No group selected"
+	init() {
+		//обьявляется в ините потому что при создании view не видит и не отображает замены (cringe)
+		self.group = UserDefaults.standard.string(forKey:"SelectedGroup") ?? "No Group Selected"
+	}
 	var body: some View {
+		
 		ZStack
 		{
 			if(colorScheme == .dark)
@@ -74,6 +79,7 @@ struct ChangesView: View {
 					} .disabled(isLoading)
 				}
 			}
+			
 			ScrollView(.vertical) {
 				VStack(spacing: 20) {
 					Divider()
