@@ -222,18 +222,27 @@ class parser
 				ring.id = Int(try tds[0].text())
 				let arrayEnd = getArrayRings(tds: tds, weekpart: 2)
 				let arrayDay = getArrayRings(tds: tds, weekpart: 1)
+				
 				var str = arrayDay[0]
-				str.insert(":", at: str.index(str.startIndex, offsetBy: 2))
+				str = insertDott(stir: str, offset: 2)
+				//str.insert(":", at: str.index(str.startIndex, offsetBy: 2))
 				ring.StartTime = str
+				
 				str = arrayDay[1]
-				str.insert(":", at: str.index(str.startIndex, offsetBy: 2))
+				str = insertDott(stir: str, offset: 2)
+				//str.insert(":", at: str.index(str.startIndex, offsetBy: 2))
 				ring.EndTime = str
+				
 				str = arrayEnd[0]
-				str.insert(":", at: str.index(str.endIndex, offsetBy: -2))
+				str = insertDott(stir: str, offset: 2)
+				//str.insert(":", at: str.index(str.endIndex, offsetBy: -2))
 				ring.WEStartTime = str
+				
 				str = arrayEnd[1]
-				str.insert(":", at: str.index(str.endIndex, offsetBy: -2))
+				str = insertDott(stir: str, offset: 2)
+				//str.insert(":", at: str.index(str.endIndex, offsetBy: -2))
 				ring.WEEndTime = str
+				
 				RingArray.append(ring)
 			}
 			Rings.ring = RingArray
@@ -241,6 +250,16 @@ class parser
 		} catch {
 			print("Was error getting Rings list!")
 			}
+	}
+	
+	func insertDott(stir: String, offset: Int) -> String
+	{
+		var str = stir
+		if (stir.count > 2)
+		{
+			str.insert(":", at: str.index(str.startIndex, offsetBy: offset))
+		}
+		return str
 	}
 	
 	func getArrayRings(tds: [Element], weekpart: Int) -> [String]
